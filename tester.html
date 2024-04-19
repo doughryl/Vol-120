@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="csrf-token" content="{{ csrf_token }}" />
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!--Icon-->
+  <link rel="icon" href="{% static 'images/icon.jpg' %}" type="image/x-icon" />
+
+  <!--Offline Bootstrap-->
+  <script src="bootstrap-offline/js/jquery-3.6.0.js"></script>
+  <script src="bootstrap-offline/js/bootstrap.js"></script>
+
+  <!--Offline Bootstrap JavaScript -->
+  <script src="bootstrap-offline/js/bootstrap.bundle.js"></script>
+
+  <link
+    rel="stylesheet"
+    href="'bootstrap-offline/css/bootstrap.css"
+  />
+
+  <!--Offline Font Awesome-->
+  <link rel="stylesheet" href="icons/css/all.min.css" />
+  <script
+    src="https://kit.fontawesome.com/8ae51e785b.js"
+    crossorigin="anonymous"
+  ></script>
+
+	<!-- Boxicons -->
+	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+
+	<!-- My CSS -->
+  <link rel="stylesheet" href="css/dash.css" />
+  <link rel="stylesheet" href="css/test.css" />
+
+
+	<title>Audiometer | Hearing Test</title>
+
+</head>
+
+  <body>
+   	<!-- SIDEBAR -->
+	<section id="sidebar">
+		<a href="#" class="brand">
+			<i class="fa-solid fa-headphones icon"></i>
+			<span class="text">Audiometer</span>
+		</a>
+		<ul class="side-menu top">
+			<li class="active">
+        <a href="{% url 'dashboard' %}">
+          <i class="fas fa-home icon"></i>
+					<span class="text">Dashboard</span>
+				</a>
+			</li>
+			<li>
+				<a href="{% url 'test' %}">
+					<i class="fas fa-wave-square icon"></i>
+					<span class="text">Test</span>
+				</a>
+			</li>
+			<li>
+        <a href="{% url 'analytics' %}">
+          <i class="fas fa-book icon"></i>
+					<span class="text">Analytics</span>
+				</a>
+			</li>
+      <li>
+        <a href="{% url 'settings' %}">
+					<i class="fas fa-gear icon"></i>
+					<span class="text">Settings</span>
+				</a>
+			</li>
+		</ul>
+		<ul class="side-menu">
+			<li>
+				<a href="#" class="logout">
+          <i class="fa-solid fa-arrow-right-from-bracket icon"></i>
+					<span class="text">Logout</span>
+				</a>
+			</li>
+		</ul>
+	</section>
+	<!-- SIDEBAR -->
+
+  <!-- CONTENT -->
+	<section id="content">
+		<!-- NAVBAR -->
+		<nav>
+			<div class="left">
+        <i class="fa-solid fa-play"></i>
+        <span class="text">Hearing Test</span>
+      </div>
+      <!-- <div class="nav-right">
+        <a href="#" class="profile">
+          <i class="fa-solid fa-user icon"></i>
+        </a>
+      </div> -->
+		</nav>
+		<!-- NAVBAR -->
+
+
+    <section class="home-feed">
+      <!--Hearing Test-->
+
+      <section id="test">
+        <div class="instruct-grid">
+          <div class="quest-box">
+            <div class="top-tester">
+              <div class="top-left">
+                <p class="ear">Ear <br> <span id="currentEar">Left</span></p>
+                <i id="toneIndicator" class="fas fa-circle"></i>
+              </div>
+              <div class="top-right">
+                <p>Frequency <br> <span id="currentFrequency">500 Hz</span><p>
+              <p
+                    >Volume <br> <span id="currentVolume">0 dB</span></p
+                  >
+              </div>
+            </div>
+            
+            <div class="bottom-tester">
+              <div class="bottom-div">
+                <div class="bottom">
+                  <button class="test_btn" onclick="increaseVolume()">
+                    <i class="fa-solid fa-plus fab-icon"></i>5 dB
+                  </button>
+                  <button class="test_btn" onclick="decreaseVolume()">
+                    <i class="fa-solid fa-minus fab-icon"></i>10 dB
+                  </button>
+                </div>
+                <div class="bottom">
+                  <button class="test_btn" onclick="playTone()">
+                    <i class="fa-solid fa-play fab-icon"></i>Play
+                  </button>
+                  <button class="cannot-hear-btn" onclick="cannotHear()">
+                    Cannot Hear
+                  </button>
+                </div>   
+              </div>
+                <button class="next_btn" onclick="nextFrequency()">
+                  <i class="fa-solid fa-fast-forward fab-icon"></i>Next
+                </button>
+            </div>
+          </div>
+        </div>
+        <div class="complete-btn-container hide">
+          <button class="test_btn complete-btn" style="background: #1cd162" onclick="completeTest()">
+            Show Results
+          </button>
+        </div>  
+      </section>
+    </section>
+    </section>
+
+    <script>
+    const allSideMenu = document.querySelectorAll('#sidebar .side-menu.top li a');
+
+    allSideMenu.forEach(item=> {
+      const li = item.parentElement;
+
+      item.addEventListener('click', function () {
+        allSideMenu.forEach(i=> {
+          i.parentElement.classList.remove('active');
+        })
+        li.classList.add('active');
+      })
+    });
+
+    // TOGGLE SIDEBAR
+    const menuBar = document.querySelector('#content nav .fa-solid.fa-play');
+    const sidebar = document.getElementById('sidebar');
+
+    menuBar.addEventListener('click', function () {
+      sidebar.classList.toggle('hide');
+    })
+
+    //TEST
+
+      var responseUrl = "{% url 'response' %}";
+      let audioContext;
+      let oscillator;
+      let gainNode;
+      let isPlaying = false;
+      let currentFrequencyIndex = 0;
+      let frequencies = [500, 1000, 2000, 4000];
+      let currentEar = "Left";
+      let frequencyDecibelData = [];
+      let isTestCompleted = false;
+      let cannotHearButton = document.querySelector(".cannot-hear-btn");
+      let cannotHearValue = 0;
+      let currentVolume = 40;
+      let timeoutId; 
+
+      // initial setup
+      window.onload = function () {
+        updateVolume(currentVolume); 
+      };
+
+      function playTone() {
+        if (!isPlaying && !isTestCompleted) {
+          stopTone();
+          audioContext = new (window.AudioContext || window.webkitAudioContext)();
+          oscillator = audioContext.createOscillator();
+          gainNode = audioContext.createGain();
+
+          const panNode = audioContext.createStereoPanner();
+          panNode.pan.value = currentEar === "Left" ? -1 : 1;
+
+          oscillator.type = "sine"; 
+          oscillator.frequency.setValueAtTime(
+            frequencies[currentFrequencyIndex],
+            audioContext.currentTime
+          );
+          oscillator.connect(panNode);
+          panNode.connect(gainNode);
+          gainNode.connect(audioContext.destination);
+
+          gainNode.gain.setValueAtTime(convertToGain(currentVolume), audioContext.currentTime);
+          // wala ka covertToGain(currentVolume) dito ^^
+          const currentFrequencyElement = document.getElementById("currentFrequency");
+          currentFrequencyElement.textContent = frequencies[currentFrequencyIndex] + " Hz";
+
+          const currentEarElement = document.getElementById("currentEar");
+          currentEarElement.textContent = currentEar;
+
+          oscillator.start();
+          isPlaying = true;
+
+          document.getElementById("toneIndicator").classList.add("playing");
+
+          setTimeout(() => {
+            stopTone();
+          }, 1000);
+        }
+      }
+
+      function convertToGain(volume) {
+        return volume / 120;
+        // yung 24, galing sa volumeStep dati
+      }
+
+      function nextFrequency() {
+        clearTimeout(timeoutId); 
+
+        stopTone();
+
+        currentVolume = 40;
+
+        if (!isTestCompleted) {
+          if (cannotHearValue === 0) {
+            const volumeValue = currentVolume;
+            frequencyDecibelData.push({
+              frequency: frequencies[currentFrequencyIndex],
+              decibel: volumeValue,
+              ear: currentEar,
+            });
+          }
+
+          cannotHearValue = 0;
+
+          if (currentEar === "Left") {
+            if (currentFrequencyIndex < frequencies.length - 1) {
+              currentFrequencyIndex++;
+            } else {
+              currentEar = "Right";
+              currentFrequencyIndex = 0;
+            }
+          } else if (currentEar === "Right") {
+            if (currentFrequencyIndex < frequencies.length - 1) {
+              currentFrequencyIndex++;
+            } else {
+              alert("Hearing test completed!");
+              displayFrequencyDecibelData();
+
+              console.log("Test completed, sending data to the database...");
+
+              sendDataToDatabase();
+
+              const completeButtonContainer = document.querySelector(".complete-btn-container");
+              completeButtonContainer.classList.remove("hide");
+
+              isTestCompleted = true;
+
+              return;
+            }
+          }
+
+          const currentFrequencyElement =
+            document.getElementById("currentFrequency");
+          currentFrequencyElement.textContent =
+            frequencies[currentFrequencyIndex] + " Hz";
+
+          const currentEarElement = document.getElementById("currentEar");
+          currentEarElement.textContent = currentEar;
+
+          updateVolume(currentVolume);
+        }
+      }
+
+      function increaseVolume() {
+          currentVolume = Math.min(120, currentVolume + 5);
+          updateVolume(currentVolume);
+      }
+
+      function decreaseVolume() {
+          currentVolume = Math.max(0, currentVolume - 10);
+          updateVolume(currentVolume);
+      }
+
+      function updateVolume(value) {
+          currentVolume = value;
+
+          const currentVolumeElement = document.getElementById("currentVolume");
+          currentVolumeElement.textContent = currentVolume + " dB";
+
+          if (gainNode) {
+            const volume = Math.pow(10, value / 120); 
+            gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
+          }
+      }
+
+
+      function stopTone() {
+        if (isPlaying) {
+          oscillator.stop();
+          isPlaying = false;
+          document.getElementById("toneIndicator").classList.remove("playing");
+        }
+      }
+
+      function cannotHear() {
+        cannotHearValue = 1;
+        frequencyDecibelData.push({
+          frequency: frequencies[currentFrequencyIndex],
+          decibel: null,
+          ear: currentEar,
+          cannotHear: cannotHearValue,
+        });
+        nextFrequency();
+      }
+
+
+      function completeTest() {
+        console.log('User clicked "Complete"');
+        window.location.href =  "{% url 'result' %}";
+      }
+
+
+      function sendDataToDatabase() {
+        if (frequencyDecibelData.length > 0) {
+          frequencyDecibelData.forEach((entry) => {
+            if (entry.cannotHear === undefined) {
+              entry.cannotHear = 0;
+            }
+          });
+
+          const xhr = new XMLHttpRequest();
+          const csrfToken = document
+            .querySelector("[name=csrf-token]")
+            .getAttribute("content"); 
+
+          xhr.open("POST", responseUrl, true);
+          xhr.setRequestHeader("Content-Type", "application/json");
+          xhr.setRequestHeader("X-CSRFToken", csrfToken); 
+
+          const data = {
+            decibels: frequencyDecibelData.map((entry) => entry.decibel),
+            cannotHear: frequencyDecibelData.map((entry) => entry.cannotHear), 
+          };
+
+          console.log(
+            "Decibel Values Array:",
+            frequencyDecibelData.map((entry) => entry.decibel)
+          );
+          console.log(
+            "Cannot Hear Values Array:",
+            frequencyDecibelData.map((entry) => entry.cannotHear) 
+          );
+
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+              if (xhr.status === 201) {
+                console.log("Data sent to database successfully.");
+                frequencyDecibelData = [];
+              } else {
+                console.log(
+                  "Error sending data to the database. Status:",
+                  xhr.status
+                );
+              }
+            }
+          };
+
+          xhr.send(JSON.stringify(data));
+        }
+      }
+
+      function displayFrequencyDecibelData() {
+        console.log("Frequency and Decibel Data:");
+        frequencyDecibelData.forEach((data) => {
+          console.log(
+            `Frequency: ${data.frequency} Hz, Decibel: ${
+              data.decibel || "Cannot Hear"
+            }, Ear: ${data.ear}`
+          );
+        });
+      }
+
+    </script>
+  </body>
+</html>

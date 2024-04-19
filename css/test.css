@@ -1,0 +1,395 @@
+/* Light */
+@font-face {
+  font-family: "Poppins-Light";
+  src: url(../fonts/Poppins/Poppins-Light.ttf) format("truetype");
+  font-style: normal;
+  font-weight: 300;
+}
+
+/* Regular */
+@font-face {
+  font-family: "Poppins-Reg";
+  src: url(../fonts/Poppins/Poppins-Regular.ttf) format("truetype");
+  font-style: normal;
+  font-weight: 400;
+}
+
+/* Bold */
+@font-face {
+  font-family: "Poppins-Bold";
+  src: url(../fonts/Poppins/Poppins-Bold.ttf) format("truetype");
+  font-style: normal;
+  font-weight: 700;
+}
+
+/* Black */
+@font-face {
+  font-family: "Poppins-Black";
+  src: url(../fonts/Poppins/Poppins-Black.ttf) format("truetype");
+  font-style: normal;
+  font-weight: 900;
+}
+
+#test{
+  overflow-y: auto;
+}
+
+.navbar-nav .nav-item .nav-link.active-link {
+  font-family: "Poppins-Light", sans-serif;
+  font-weight: 300;
+  font-size: 1.2rem;
+  color: rgb(255, 108, 71);
+}
+
+#test {
+  padding: 0 5%;
+}
+
+.instructions-section {
+  padding: 0 6%;
+  font-family: 'Poppins-Reg';
+}
+
+.instructions-section .card-body li {
+  line-height: 2em;
+}
+
+.instructions-section .card-body li {
+  list-style: decimal;
+}
+
+.instructions-section .card-body {
+  background-color: rgb(248, 248, 248);
+  border-radius: 10px;
+  border: none;
+  margin-top: 20px;
+}
+
+.instructions-section .btn.btn-primary{
+  background-color:  rgb(255, 108, 71);
+  border: none;
+}
+
+.instructions-section .btn.btn-primary:hover{
+  background-color:  rgb(253, 97, 58);
+  border: none;
+}
+
+.instructions-section .btn.btn-primary:active{
+  background-color:  rgb(255, 108, 71);
+  border: none;
+}
+
+.first-box,
+.last-box,
+.gender-box,
+.age-box {
+  font-family: "Poppins-Bold", sans-serif;
+  font-weight: 700;
+  color: #342E37;
+}
+
+.first-box input {
+  font-family: "Poppins-Reg", sans-serif;
+  border: none;
+  border-bottom: 1.5px solid grey;
+  outline: none;
+  width: 100%;
+  background-color: #fff;
+}
+
+.last-box input {
+  font-family: "Poppins-Reg", sans-serif;
+  border: none;
+  border-bottom: 1.5px solid grey;
+  outline: none;
+  width: 100%;
+  background-color: #fff;
+}
+.gender-box select {
+  width: 100%;
+  font-family: "Poppins-Reg", sans-serif;
+  background-color: #fff;
+}
+
+.age-box input {
+  font-family: "Poppins-Reg", sans-serif;
+  border: none;
+  border-bottom: 1.5px solid grey;
+  outline: none;
+  width: 100%;
+  background-color: #fff;
+}
+
+.age-box input:focus,
+.gender-box select:focus,
+.first-box input:focus,
+.last-box input:focus {
+  border-color: rgb(255, 108, 71);
+}
+
+
+.form_btn {
+  color: #fff;
+  font-family: 'Poppins-Reg', sans-serif;
+  font-size: 18px;
+  background: rgb(255, 108, 71);
+  outline: none;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 30px;
+  width: 50%;
+}
+
+.form_btn:hover {
+  background: rgb(255, 108, 71);
+}
+
+.question-box {
+  padding: 5% 5%;
+  width: 38%;
+}
+
+.quest-box {
+  padding: 5% 5%;
+  width: 100%;
+  background: #f8f8f8;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 40px;
+}
+
+.instruction-box h1, #hearing-test h1, .instruct-box h1 {
+  font-family: "Poppins-Bold", sans-serif;
+  font-weight: 700;
+  color: rgb(255, 108, 71);
+  margin-bottom: 20px;
+}
+
+.instruction-box p, .instruct-box p {
+  font-family: "Poppins-Reg", sans-serif;
+  font-size: 16px;
+  text-align: left;
+}
+
+.instruction-grid {
+  display: flex;
+  flex-direction: row;
+  column-gap: 0px;
+  padding: 0 1%;
+  margin: 5% 0;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.instruct-grid {
+  display: flex;
+  flex-direction: row;
+  column-gap: 50px;
+  padding: 0 1%;
+  margin: 3% 0 0 0;
+  border-radius: 12px;
+}
+
+.instruction-box {
+  padding: 5% 5%;
+  width: 55.4%;
+  /*border: solid #292421;*/
+}
+
+.instruct-box{
+  padding: 5% 5%;
+  width: 48%;
+  background: #fff;
+  border-radius: 12px;
+}
+
+select#gender {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}
+
+/*Hearing Test*/
+
+#hearing-test {
+  font-family: 'Poppins-Reg', sans-serif;
+  width: 90%;
+  margin: 4.5% 0 5% 5%;
+  border-radius: 12px;
+  background-color: #fff;
+  padding: 3.5%;
+}
+
+.volumeSlider {
+  -webkit-appearance: none; 
+  background-color: #ddd;
+  border-radius: 6px;
+  background-image: linear-gradient(to right, rgb(255, 108, 71)  10%, #313131  0%);
+  box-shadow: 0 0 7px 1px rgba(60, 60, 60, 0.4);
+  height: 3em;
+  width: 20em;
+  margin-right: 3.5em;
+}
+
+
+.test_btn,
+.cannot-hear-btn {
+  font-family: 'Poppins-Reg', sans-serif;
+  color: #fff;
+  font-size: 16px;
+  background: #a6a6a6;
+  outline: none;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.test_btn:hover, .cannot-hear-btn:hover {
+  background: rgb(255, 108, 71);
+}
+
+.next_btn:hover{
+  background-color:  rgb(253, 97, 58);
+}
+
+.next_btn{
+  font-family: 'Poppins-Reg', sans-serif;
+  color: #fff;
+  font-size: 16px;
+  background-color:  rgb(255, 108, 71);
+  outline: none;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: 100%;
+}
+
+.test_btn i, .next_btn i{
+  margin-right: 10px;
+}
+
+
+#currentFrequency, #currentVolume, #currentEar {
+  color: rgb(255, 108, 71);
+  font-weight: 700;
+}
+
+.volume-box {
+  transform: rotateZ(270deg);
+}
+
+.top-tester {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  column-gap: 60px;
+}
+
+.top-right{
+  font-family: 'Poppins-Reg', sans-serif;
+  font-size: 18px;
+  padding: 20px 0;
+  border-radius: 10px;
+  width: 20%;
+  background-color:  rgba(211, 211, 211, 0.3);
+  text-align: center;
+  height: 95%;
+}
+
+.top-left{
+  font-family: 'Poppins-Reg', sans-serif;
+  font-size: 18px;
+  border-radius: 10px;
+  width: 20%;
+  background-color:  rgba(211, 211, 211, 0.3);
+  text-align: center;
+  height: 95%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.bottom-tester{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  column-gap: 20px;
+}
+
+.bottom-div{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  border-radius: 10px;
+  background-color: rgb(237, 237, 237);
+  width: 40%;
+  height: 150px
+}
+
+.bottom-div .bottom{
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 40%;
+  row-gap: 20px;
+}
+
+.complete-btn-container {
+  font-family: 'Poppins-Reg', sans-serif;
+  display: flex;
+  justify-content: center;
+}
+
+.complete-btn-container.hide {
+  display: none;
+}
+
+#toneIndicator{
+  color: #585858;
+}
+
+#toneIndicator.playing {
+  color: rgb(0, 255, 0); 
+}
+
+
+
+@media (max-width: 1060px) {
+  .instruction-grid {
+    margin-top: 40px;
+    row-gap: 20px;
+    padding: 0 10%;
+    flex-direction: column-reverse;
+  }
+
+  .question-box, .quest-box {
+    background: #fff;
+    padding: 5% 5%;
+    border-radius: 12px;
+    width: 100%;
+  }
+
+  .instruction-box, .instruct-box {
+    background: #fff;
+    padding: 5% 5%;
+    border-radius: 12px;
+    width: 100%;
+  }
+}
+
+
+
